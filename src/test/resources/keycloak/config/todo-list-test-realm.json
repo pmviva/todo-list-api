@@ -1,12 +1,12 @@
 {
-  "realm": "todo-list",
+  "realm": "todo-list-test",
   "enabled": true,
   "clients": [
     {
-      "clientId": "todo-list-app",
+      "clientId": "todo-list-test-app",
       "publicClient": true,
       "directAccessGrantsEnabled": true,
-      "redirectUris": [ "http://localhost:3000/*" ],
+      "redirectUris": [ "*" ],
       "webOrigins": [ "+" ],
       "protocol": "openid-connect"
     }
