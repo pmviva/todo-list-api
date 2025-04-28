@@ -1,0 +1,38 @@
+###
+# 1.0.0 DB CHANGELOG CONFIGURATION FILE
+###
+
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Pablo Martin Viva
+      comment: Creates the todos table
+      changes:
+        - createTable:
+            tableName: todos
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: completed
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+      rollback:
+        - sql:
+            sql: drop table todos;

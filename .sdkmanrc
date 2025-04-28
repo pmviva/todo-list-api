@@ -1,0 +1,13 @@
+###
+# SDKMAN CONFIGURATION FILE
+###
+
+###
+# CONFIGURES THE GRADLE SDK
+###
+gradle = 8.14
+
+###
+# CONFIGURES THE JAVA SDK
+###
+java = 21.0.7-tem

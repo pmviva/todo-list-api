@@ -1,0 +1,56 @@
+##
+# GITIGNORE CONFIGURATION FILE
+##
+
+###
+# GRADLE FILES CONFIGURATION
+###
+!**/src/main/**/build/
+!**/src/test/**/build/
+!gradle/wrapper/gradle-wrapper.jar
+.gradle
+build/
+
+###
+# HELP FILES CONFIGURATION
+###
+HELP.md
+
+###
+# INTELLIJ IDEA FILES CONFIGURATION
+###
+!**/src/main/**/out/
+!**/src/test/**/out/
+*.iml
+*.ipr
+*.iws
+.idea
+out/
+
+###
+# NETBEANS FILES CONFIGURATION
+###
+/.nb-gradle/
+/dist/
+/nbbuild/
+/nbdist/
+/nbproject/private/
+
+###
+# STS FILES CONFIGURATION
+###
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+
+###
+# VISUAL STUDIO CODE FILES CONFIGURATION
+###
+.vscode/

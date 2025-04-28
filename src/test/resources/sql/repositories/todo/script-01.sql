@@ -1,0 +1,25 @@
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 01', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 02', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 03', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 04', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 05', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 06', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 07', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 08', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 09', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 10', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 11', false);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 12', false);
+
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 13', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 14', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 15', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 16', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 17', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 18', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 19', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 20', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 21', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 22', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 23', true);
+INSERT INTO todos (id, description, completed) VALUES (gen_random_uuid(), 'DESCRIPTION 24', true);

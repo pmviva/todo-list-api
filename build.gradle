@@ -1,0 +1,159 @@
+/**
+ * GRADLE BUILD CONFIGURATION FILE
+ */
+
+/**
+ * CONFIGURES THE PLUGINS
+ */
+plugins {
+  /**
+   * DEFINES THE SPOTLESS PLUGIN
+   */
+  id 'com.diffplug.spotless'           version '7.0.3'
+
+  /**
+   * DEFINES THE SPOTBUGS PLUGIN
+   */
+  id 'com.github.spotbugs'             version '6.1.9'
+
+  /**
+   * DEFINES THE SPRINGFRAMEWORK BOOT PLUGIN
+   */
+  id 'org.springframework.boot'        version '3.4.4'
+
+  /**
+   * DEFINES THE JACOCO PLUGIN
+   */
+  id 'jacoco'
+
+  /**
+   * DEFINES THE JAVA PLUGIN
+   */
+  id 'java'
+
+  /**
+   * DEFINES THE SPRING DEPENDENCY MANAGEMENT PLUGIN
+   */
+  id 'io.spring.dependency-management' version '1.1.7'
+}
+
+/**
+ * DEFINES THE GROUP PROPERTY
+ */
+group = 'com.github.pmviva'
+
+/**
+ * DEFINES THE VERSION PROPERTY
+ */
+version = '0.0.1-SNAPSHOT'
+
+/**
+ * CONFIGURES THE JACOCO TEST REPORT PLUGIN
+ */
+jacocoTestReport {
+  dependsOn test
+}
+
+/**
+ * CONFIGURES THE JACOCO TEST COVERAGE VERIFICATION PLUGIN
+ */
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      limit {
+        minimum = 0.7
+      }
+    }
+  }
+}
+
+/**
+ * CONFIGURES THE JAVA PLUGIN
+ */
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
+}
+
+/**
+ * CONFIGURES THE SPOTLESS PLUGIN
+ */
+spotless {
+  java {
+    endWithNewline()
+    importOrder()
+    palantirJavaFormat()
+    removeUnusedImports()
+    toggleOffOn()
+    trimTrailingWhitespace()
+  }
+}
+
+/**
+ * CONFIGURES THE TEST PLUGIN
+ */
+test {
+  finalizedBy jacocoTestReport
+}
+
+/**
+ * CONFIGURES THE REPOSITORIES
+ */
+repositories {
+  mavenCentral()
+}
+
+/**
+ * CONFIGURES THE DEPENDENCIES
+ */
+dependencies {
+  /**
+   * DEFINES THE COMPILE ONLY DEPENDENCIES
+   */
+  compileOnly        'com.github.spotbugs:spotbugs-annotations:4.9.3'
+
+  /**
+   * DEFINES THE DEVELOPMENT ONLY DEPENDENCIES
+   */
+  developmentOnly    'org.springframework.boot:spring-boot-docker-compose'
+
+  /**
+   * DEFINES THE IMPLEMENTATION DEPENDENCIES
+   */
+  implementation     'org.liquibase:liquibase-core'
+  implementation     'org.springframework.boot:spring-boot-starter-actuator'
+  implementation     'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation     'org.springframework.boot:spring-boot-starter-security'
+  implementation     'org.springframework.boot:spring-boot-starter-validation'
+  implementation     'org.springframework.boot:spring-boot-starter-web'
+
+  /**
+   * DEFINES THE RUNTIME ONLY DEPENDENCIES
+   */
+  runtimeOnly        'org.postgresql:postgresql'
+
+  /**
+   * DEFINES THE TEST IMPLEMENTATION DEPENDENCIES
+   */
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+  testImplementation 'org.springframework.security:spring-security-test'
+  testImplementation 'org.testcontainers:junit-jupiter'
+  testImplementation 'org.testcontainers:postgresql'
+
+  /**
+   * DEFINES THE TEST RUNTIME ONLY DEPENDENCIES
+   */
+  testRuntimeOnly    'org.junit.platform:junit-platform-launcher'
+}
+
+/**
+ * CONFIGURES THE TEST TASK
+ */
+tasks.test {
+  useJUnitPlatform()
+  testLogging {
+    events 'passed', 'skipped', 'failed'
+  }
+}

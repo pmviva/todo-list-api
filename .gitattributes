@@ -1,0 +1,18 @@
+##
+# GITATTRIBUTES CONFIGURATION FILE
+##
+
+###
+# BAT FILES CONFIGURATION
+###
+*.bat text eol=crlf
+
+###
+# GRADLE FILES CONFIGURATION
+###
+/gradlew text eol=lf
+
+###
+# JAR FILES CONFIGURATION
+###
+*.jar binary

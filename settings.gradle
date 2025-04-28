@@ -1,0 +1,8 @@
+/**
+ * GRADLE SETTINGS CONFIGURATION FILE
+ */
+
+/**
+ * DEFINES THE ROOT PROJECT NAME PROPERTY
+ */
+rootProject.name = 'todo-list-api'
