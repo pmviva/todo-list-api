@@ -25,6 +25,7 @@ package com.github.pmviva.todo.list.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -36,12 +37,17 @@ public class SecurityConfiguration {
     private static final String API_V1_PATH = "/api/v1/**";
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(API_V1_PATH)
-                        .permitAll()
-                        .anyRequest()
-                        .denyAll())
+    @Order(1)
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+        return http.securityMatcher(API_V1_PATH)
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain publicFilterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll()).build();
     }
 }
