@@ -32,6 +32,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -46,9 +47,12 @@ import com.github.pmviva.todo.list.api.exception.NotFoundException;
 import com.github.pmviva.todo.list.api.model.Todo;
 import com.github.pmviva.todo.list.api.service.TodoService;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +64,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -88,6 +93,7 @@ public class DefaultTodoControllerTest {
         mockMvc.perform(post("/api/v1/todos")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(jwt().jwt(generateJWT()))
                         .content(json))
                 .andExpectAll(
                         status().isCreated(),
@@ -110,7 +116,8 @@ public class DefaultTodoControllerTest {
 
         mockMvc.perform(get("/api/v1/todos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .param("completed", "false"))
+                        .param("completed", "false")
+                        .with(jwt().jwt(generateJWT())))
                 .andExpectAll(status().isOk(), content().json(json));
 
         verify(todoService, times(1)).getTodos(any(Pageable.class), eq(Optional.of(Boolean.FALSE)));
@@ -125,7 +132,9 @@ public class DefaultTodoControllerTest {
 
         doReturn(page).when(todoService).getTodos(any(Pageable.class), eq(Optional.empty()));
 
-        mockMvc.perform(get("/api/v1/todos").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/todos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(jwt().jwt(generateJWT())))
                 .andExpectAll(status().isOk(), content().json(json));
 
         verify(todoService, times(1)).getTodos(any(Pageable.class), eq(Optional.empty()));
@@ -139,7 +148,8 @@ public class DefaultTodoControllerTest {
         doReturn(generateTodo()).when(todoService).getTodo(any(UUID.class));
 
         mockMvc.perform(get("/api/v1/todos/033feb09-fd25-49ff-b1af-d65ce5740eea")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(jwt().jwt(generateJWT())))
                 .andExpectAll(status().isOk(), content().json(json));
 
         verify(todoService, times(1)).getTodo(any(UUID.class));
@@ -150,7 +160,8 @@ public class DefaultTodoControllerTest {
         doThrow(new NotFoundException("Todo not found")).when(todoService).getTodo(any(UUID.class));
 
         mockMvc.perform(get("/api/v1/todos/033feb09-fd25-49ff-b1af-d65ce5740eea")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(jwt().jwt(generateJWT())))
                 .andExpectAll(status().isNotFound(), content().string(blankOrNullString()));
 
         verify(todoService, times(1)).getTodo(any(UUID.class));
@@ -165,6 +176,7 @@ public class DefaultTodoControllerTest {
 
         mockMvc.perform(put("/api/v1/todos/033feb09-fd25-49ff-b1af-d65ce5740eea")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(jwt().jwt(generateJWT()))
                         .content(json))
                 .andExpectAll(status().isOk(), content().json(json));
 
@@ -180,6 +192,7 @@ public class DefaultTodoControllerTest {
 
         mockMvc.perform(put("/api/v1/todos/033feb09-fd25-49ff-b1af-d65ce5740eea")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(jwt().jwt(generateJWT()))
                         .content(json))
                 .andExpectAll(status().isNotFound(), content().string(blankOrNullString()));
 
@@ -191,7 +204,8 @@ public class DefaultTodoControllerTest {
         doNothing().when(todoService).deleteTodo(any(UUID.class));
 
         mockMvc.perform(delete("/api/v1/todos/033feb09-fd25-49ff-b1af-d65ce5740eea")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(jwt().jwt(generateJWT())))
                 .andExpectAll(status().isNoContent(), content().string(blankOrNullString()));
 
         verify(todoService, times(1)).deleteTodo(any(UUID.class));
@@ -202,7 +216,8 @@ public class DefaultTodoControllerTest {
         doThrow(new NotFoundException("Todo not found")).when(todoService).deleteTodo(any(UUID.class));
 
         mockMvc.perform(delete("/api/v1/todos/033feb09-fd25-49ff-b1af-d65ce5740eea")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(jwt().jwt(generateJWT())))
                 .andExpectAll(status().isNotFound(), content().string(blankOrNullString()));
 
         verify(todoService, times(1)).deleteTodo(any(UUID.class));
@@ -226,5 +241,18 @@ public class DefaultTodoControllerTest {
                 new Todo("DESCRIPTION 03", false),
                 new Todo("DESCRIPTION 04", false),
                 new Todo("DESCRIPTION 05", false));
+    }
+
+    private Consumer<Jwt.Builder> generateJWT() {
+        return jwt -> jwt.claim("allowed_origins", Collections.emptyList())
+                .claim("realm_access", Map.of("roles", List.of("user")))
+                .claim("sub", "3476e3ae-2d26-4111-b667-c564c51ad409")
+                .claim("scope", "email profile")
+                .claim("email_verified", "true")
+                .claim("name", "Test first name Test last name")
+                .claim("preferred_username", "test")
+                .claim("given_name", "Test first name")
+                .claim("family_name", "Test last name")
+                .claim("email", "test@email.com");
     }
 }
